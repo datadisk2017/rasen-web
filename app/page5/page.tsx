@@ -27,7 +27,7 @@ export default function Page5() {
                             Correspondence
                         </h1>
                         <p className="mt-6 max-w-2xl text-base text-slate-100/90 sm:text-lg">
-                            Next.js と Tailwind CSS で構成したトップセクションです。
+
                         </p>
                     </div>
 

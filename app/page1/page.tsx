@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import topImage from '../../public/Free-Exhibition.jpg';
+import topImage from '../../public/free-exhibition-2.jpg';
 import HamburgerMenu from '../components/HamburgerMenu';
 
 export default function Page1() {

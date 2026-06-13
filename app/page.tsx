@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import topImage from '../public/WebSite_top.png';
+import topImage from '../public/website_top.png';
 
 export default function Home() {
   return (

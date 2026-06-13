@@ -18,6 +18,7 @@ export default function Page2() {
                         sizes="100vw"
                         className="object-cover object-center"
                         priority
+                        unoptimized
                     />
                     <div className="absolute inset-0 bg-black/30" />
                     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">

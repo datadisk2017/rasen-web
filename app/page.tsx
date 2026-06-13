@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import topImage from '../public/webSite_top.png';
+import topImage from '../public/WebSite_top.png';
 
 export default function Home() {
   return (
@@ -17,6 +17,7 @@ export default function Home() {
             sizes="100vw"
             className="object-cover object-center"
             priority
+            unoptimized
           />
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">

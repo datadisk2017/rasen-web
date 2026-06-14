@@ -12,7 +12,7 @@ export default function Home() {
         >
           <Image
             src={topImage}
-            alt="ホームページトップ画像"
+            alt="ラセンのホームページ"
             fill
             sizes="100vw"
             className="object-cover object-center"
@@ -21,9 +21,9 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-slate-100/80">ようこそ</p>
+            <p className="mb-4 text-sm uppercase tracking-[0.35em] text-slate-100/80"> </p>
             <h1 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">
-              ラセンのホームページへ
+
             </h1>
             <p className="mt-6 max-w-2xl text-base text-slate-100/90 sm:text-lg">
 

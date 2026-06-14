@@ -119,7 +119,7 @@ export default function HamburgerMenu() {
     return (
         <>
             {/* Language buttons (top-right) */}
-            <div data-no-translate className="absolute right-4 top-4 z-40 flex gap-2">
+            {/* <div data-no-translate className="absolute right-4 top-4 z-40 flex gap-2">
                 <button
                     type="button"
                     disabled={translating}
@@ -160,7 +160,7 @@ export default function HamburgerMenu() {
                 >
                     العربية
                 </button>
-            </div>
+            </div> */}
             <button
                 type="button"
                 aria-expanded={open}
@@ -180,7 +180,7 @@ export default function HamburgerMenu() {
                 />
             </button>
 
-            {/* {open && (
+            {open && (
                 <div data-no-translate className="absolute left-4 top-16 z-30 w-48 rounded-md bg-slate-900/90 p-2 shadow-lg">
                     <nav className="flex flex-col">
                         <Link href="/" className="block px-3 py-2 rounded text-white hover:bg-slate-800">ホーム</Link>
@@ -191,7 +191,7 @@ export default function HamburgerMenu() {
                         <Link href="/page5" className="block px-3 py-2 rounded text-white hover:bg-slate-800">Correspondence</Link>
                     </nav>
                 </div>
-            )} */}
+            )}
         </>
     );
 }

@@ -167,7 +167,7 @@ export default function HamburgerMenu() {
                 aria-label="メニュー"
                 onClick={() => setOpen((s) => !s)}
                 data-no-translate
-                className="absolute left-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-md bg-white/30 hover:bg-white/40 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="absolute left-9 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-md bg-white/30 hover:bg-white/40 focus:outline-none focus:ring-2 focus:ring-sky-400"
             >
                 <span
                     className={`block h-0.5 w-6 bg-black transition-transform ${open ? "translate-y-1.5 rotate-45" : ""}`}
@@ -181,7 +181,7 @@ export default function HamburgerMenu() {
             </button>
 
             {open && (
-                <div data-no-translate className="absolute left-4 top-16 z-30 w-48 rounded-md bg-slate-900/90 p-2 shadow-lg">
+                <div data-no-translate className="absolute left-9 top-16 z-30 w-48 rounded-md bg-slate-900/90 p-2 shadow-lg">
                     <nav className="flex flex-col">
                         <Link href="/" className="block px-3 py-2 rounded text-white hover:bg-slate-800">ホーム</Link>
                         <Link href="/page1" className="block px-3 py-2 rounded text-white hover:bg-slate-800">ISTANBUL EXHIBITION</Link>

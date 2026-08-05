@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import topImage from '../../public/shasti_flyer.jpg';
-import subImage from '../../public/shasti_ura.jpg';
+import topImage from '../../public/dokozoku0901.png';
+import subImage from '../../public/dokozoku_ura.png';
 import HamburgerMenu from '../components/HamburgerMenu';
 
 export default function Page2() {
@@ -14,7 +14,7 @@ export default function Page2() {
                     <div className="flex flex-col gap-12">
                         <Image
                             src={topImage}
-                            alt="フライヤー表面"
+                            alt="dokozoku"
                             sizes="100vw"
                             className="w-full h-auto shadow-2xl"
                             priority
@@ -22,7 +22,7 @@ export default function Page2() {
                         />
                         <Image
                             src={subImage}
-                            alt="フライヤー裏面"
+                            alt="dokozoku_ura"
                             sizes="100vw"
                             className="w-full h-auto shadow-2xl"
                             unoptimized

@@ -9,7 +9,9 @@ export default function Page2() {
         <main className="w-full h-screen bg-slate-950 text-white shadow-2xl shadow-black/30 mx-auto overflow-y-auto">
             <section className="w-full flex flex-col items-center pb-10 sm:pb-20">
                 <div className="w-full max-w-4xl relative px-4 sm:px-6">
-                    <HamburgerMenu />
+                    <div className="fixed top-4 left-4 sm:left-6 z-50">
+                        <HamburgerMenu />
+                    </div>
 
                     <div className="flex flex-col gap-12">
                         <Image

@@ -26,8 +26,6 @@ export default function Page4() {
                             priority
                             unoptimized
                         />
-
-
                         <Image
                             src={subImage}
                             alt="shastin_ura"

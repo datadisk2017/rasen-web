@@ -26,6 +26,8 @@ export default function Page4() {
                             priority
                             unoptimized
                         />
+
+
                         <Image
                             src={subImage}
                             alt="shastin_ura"
@@ -54,6 +56,16 @@ export default function Page4() {
                             className="w-full h-auto shadow-2xl"
                             unoptimized
                         />
+                        <div className="aspect-video w-full">
+                            <iframe
+                                className="w-full h-full"
+                                src="https://www.youtube.com/embed/zlV2kx136mg"
+                                title="YouTube video player"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
             </section>

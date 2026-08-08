@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import topImage from '../../public/free-exhibition-2.jpg';
+import topImage from '../../public/istanbul.jpg';
 import HamburgerMenu from '../components/HamburgerMenu';
 
 export default function Page1() {
@@ -13,7 +13,7 @@ export default function Page1() {
                     <div className="flex flex-col gap-12 mt-20">
                         <Image
                             src={topImage}
-                            alt="ホームページトップ画像"
+                            alt="ISTANBUL EXHIBITION"
                             sizes="100vw"
                             className="w-full h-auto shadow-2xl"
                             priority

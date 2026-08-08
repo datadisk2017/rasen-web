@@ -13,7 +13,7 @@ export default function Page2() {
                         <HamburgerMenu />
                     </div>
 
-                    <div className="flex flex-col gap-12">
+                    <div className="flex flex-col gap-12 mt-20">
                         <Image
                             src={topImage}
                             alt="dokozoku"

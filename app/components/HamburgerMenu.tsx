@@ -1,197 +1,77 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navLinks = [
+    { name: 'ホーム', href: '/' },
+    { name: 'ISTANBUL EXHIBITION', href: '/page1' },
+    { name: 'DOKO-ZOKU', href: '/page2' }, // Note: Link text was 'Shasti' before
+    { name: 'Coodinates', href: '/page3' },
+    { name: 'Fragments', href: '/page4' },
+    { name: 'Correspondence', href: '/page5' },
+];
 
 export default function HamburgerMenu() {
     const [open, setOpen] = useState(false);
-    const [selectedLang, setSelectedLang] = useState('ja');
-    const [translating, setTranslating] = useState(false);
-    const originals = new Map<Text, string>();
-
-    useEffect(() => {
-        if (selectedLang === 'ja') {
-            document.documentElement.removeAttribute('data-translate');
-            document.documentElement.lang = 'ja';
-        } else {
-            document.documentElement.setAttribute('data-translate', selectedLang);
-            document.documentElement.lang = selectedLang === 'en' ? 'en' : selectedLang === 'tr' ? 'tr' : 'ar';
-        }
-    }, [selectedLang]);
-
-    const collectTextNodes = (root: Node) => {
-        const nodes: Text[] = [];
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-            acceptNode(node) {
-                const text = node.nodeValue || '';
-                if (!text.trim()) return NodeFilter.FILTER_REJECT;
-                const parent = node.parentElement;
-                if (!parent) return NodeFilter.FILTER_REJECT;
-                if (parent.closest('[data-no-translate]')) return NodeFilter.FILTER_REJECT;
-                return NodeFilter.FILTER_ACCEPT;
-            }
-        });
-        let cur: Text | null = walker.nextNode() as Text | null;
-        while (cur) {
-            nodes.push(cur);
-            cur = walker.nextNode() as Text | null;
-        }
-        return nodes;
-    };
-
-    const restoreOriginals = () => {
-        originals.forEach((text, node) => {
-            node.nodeValue = text;
-        });
-        originals.clear();
-    };
-
-    const translateText = async (q: string, target: string) => {
-        const GOOGLE_KEY = (process.env.NEXT_PUBLIC_GOOGLE_TRANSLATE_KEY as string) || '';
-        if (GOOGLE_KEY) {
-            try {
-                const res = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${GOOGLE_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ q, source: 'ja', target, format: 'text' })
-                });
-                if (!res.ok) throw new Error('google translate failed');
-                const data = await res.json();
-                return data?.data?.translations?.[0]?.translatedText || '';
-            } catch (e) {
-                console.error('google translate error', e);
-                // fallback to libre
-            }
-        }
-
-        try {
-            const res = await fetch('https://libretranslate.de/translate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ q, source: 'ja', target, format: 'text' })
-            });
-            if (!res.ok) throw new Error('translate failed');
-            const data = await res.json();
-            return data.translatedText || '';
-        } catch (e) {
-            console.error('translate error', e);
-            return '';
-        }
-    };
-
-    const translatePage = async (target: string) => {
-        setTranslating(true);
-        try {
-            const nodes = collectTextNodes(document.body);
-            // store originals
-            nodes.forEach(n => {
-                if (!originals.has(n)) originals.set(n, n.nodeValue || '');
-            });
-
-            // translate sequentially in small batches to avoid throttling
-            const BATCH = 8;
-            for (let i = 0; i < nodes.length; i += BATCH) {
-                const batch = nodes.slice(i, i + BATCH);
-                await Promise.all(batch.map(async (node) => {
-                    const src = node.nodeValue || '';
-                    const translated = await translateText(src, target);
-                    if (translated) node.nodeValue = translated;
-                }));
-            }
-        } finally {
-            setTranslating(false);
-        }
-    };
-
-    const handleLang = (lang: string) => {
-        setSelectedLang(lang);
-        if (lang === 'ja') {
-            restoreOriginals();
-            document.documentElement.removeAttribute('data-translate');
-            document.documentElement.lang = 'ja';
-        } else {
-            document.documentElement.setAttribute('data-translate', lang);
-            document.documentElement.lang = lang === 'en' ? 'en' : lang === 'tr' ? 'tr' : 'ar';
-            // start translation
-            translatePage(lang).catch((e) => console.error(e));
-        }
-    };
 
     return (
-        <>
-            {/* Language buttons (top-right) */}
-            {/* <div data-no-translate className="absolute right-4 top-4 z-40 flex gap-2">
-                <button
-                    type="button"
-                    disabled={translating}
-                    onClick={() => handleLang('ja')}
-                    aria-label="日本語"
-                    aria-busy={translating}
-                    className={`text-sm px-2 py-1 rounded ${selectedLang === 'ja' ? 'bg-sky-600 text-white' : 'bg-white/20 text-black'} ${translating ? 'opacity-50' : ''}`}
-                >
-                    日本語
-                </button>
-                <button
-                    type="button"
-                    disabled={translating}
-                    onClick={() => handleLang('en')}
-                    aria-label="English"
-                    aria-busy={translating}
-                    className={`text-sm px-2 py-1 rounded ${selectedLang === 'en' ? 'bg-sky-600 text-white' : 'bg-white/20 text-black'} ${translating ? 'opacity-50' : ''}`}
-                >
-                    English
-                </button>
-                <button
-                    type="button"
-                    disabled={translating}
-                    onClick={() => handleLang('tr')}
-                    aria-label="Türkçe"
-                    aria-busy={translating}
-                    className={`text-sm px-2 py-1 rounded ${selectedLang === 'tr' ? 'bg-sky-600 text-white' : 'bg-white/20 text-black'} ${translating ? 'opacity-50' : ''}`}
-                >
-                    Türkçe
-                </button>
-                <button
-                    type="button"
-                    disabled={translating}
-                    onClick={() => handleLang('ar')}
-                    aria-label="العربية"
-                    aria-busy={translating}
-                    className={`text-sm px-2 py-1 rounded ${selectedLang === 'ar' ? 'bg-sky-600 text-white' : 'bg-white/20 text-black'} ${translating ? 'opacity-50' : ''}`}
-                >
-                    العربية
-                </button>
-            </div> */}
+        <div data-no-translate>
             <button
                 type="button"
                 aria-expanded={open}
                 aria-label="メニュー"
                 onClick={() => setOpen((s) => !s)}
-                data-no-translate
-                className="absolute left-9 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-md bg-white/30 hover:bg-white/40 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="z-50 flex h-10 w-10 items-center justify-center rounded-md bg-white/30 hover:bg-white/40 focus:outline-none focus:ring-2 focus:ring-sky-400"
             >
-                <span
-                    className={`block h-0.5 w-6 bg-black transition-transform ${open ? "translate-y-1.5 rotate-45" : ""}`}
-                />
-                <span
-                    className={`block h-0.5 w-6 bg-black my-1 transition-opacity ${open ? "opacity-0" : "opacity-100"}`}
-                />
-                <span
-                    className={`block h-0.5 w-6 bg-black transition-transform ${open ? "-translate-y-1.5 -rotate-45" : ""}`}
-                />
+                <div className="flex flex-col items-center justify-center">
+                    <span
+                        className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${open ? "translate-y-[5px] rotate-45" : ""}`}
+                    />
+                    <span
+                        className={`my-1 block h-0.5 w-6 bg-black transition-opacity duration-300 ease-in-out ${open ? "opacity-0" : "opacity-100"}`}
+                    />
+                    <span
+                        className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${open ? "-translate-y-[5px] -rotate-45" : ""}`}
+                    />
+                </div>
             </button>
 
-            {open && (
-                <div data-no-translate className="absolute left-9 top-16 z-30 w-48 rounded-md bg-slate-900/90 p-2 shadow-lg">
-                    <nav className="flex flex-col">
-                        <Link href="/" className="block px-3 py-2 rounded text-white hover:bg-slate-800">ホーム</Link>
-                        <Link href="/page1" className="block px-3 py-2 rounded text-white hover:bg-slate-800">ISTANBUL EXHIBITION</Link>
-                        <Link href="/page2" className="block px-3 py-2 rounded text-white hover:bg-slate-800">Shasti</Link>
-                        <Link href="/page3" className="block px-3 py-2 rounded text-white hover:bg-slate-800">Coodinates</Link>
-                        <Link href="/page4" className="block px-3 py-2 rounded text-white hover:bg-slate-800">Fragments</Link>
-                        <Link href="/page5" className="block px-3 py-2 rounded text-white hover:bg-slate-800">Correspondence</Link>
-                    </nav>
-                </div>
-            )}
-        </>
+            <AnimatePresence>
+                {open && (
+                    <motion.aside
+                        initial={{ width: 0 }}
+                        animate={{ width: 300 }}
+                        exit={{ width: 0, transition: { delay: 0.3, duration: 0.3 } }}
+                        className="fixed top-0 left-0 h-full bg-slate-900/95 text-white z-40"
+                    >
+                        <motion.nav
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            variants={{
+                                open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
+                                closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
+                            }}
+                            className="flex flex-col items-start p-8 pt-24 gap-4"
+                        >
+                            {navLinks.map(({ name, href }) => (
+                                <motion.div
+                                    key={name}
+                                    variants={{
+                                        open: { y: 0, opacity: 1, transition: { y: { stiffness: 1000, velocity: -100 } } },
+                                        closed: { y: 50, opacity: 0, transition: { y: { stiffness: 1000 } } }
+                                    }}
+                                >
+                                    <Link href={href} onClick={() => setOpen(false)} className="block text-2xl text-slate-200 hover:text-indigo-400">
+                                        {name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </motion.nav>
+                    </motion.aside>
+                )}
+            </AnimatePresence>
+        </div>
     );
 }

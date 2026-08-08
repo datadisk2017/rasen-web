@@ -1,38 +1,25 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import topImage from '../../public/free-exhibition-2.jpg';
+import topImage from '../../public/istanbul.jpg';
 import HamburgerMenu from '../components/HamburgerMenu';
 
 export default function Page1() {
     return (
-        <main className="w-auto h-screen overflow-hidden bg-slate-950 text-white shadow-2xl shadow-black/30 mx-auto">
-            <section className="relative h-screen w-full overflow-hidden flex justify-center items-center">
-                <div
-                    className="image-wrapper relative overflow-hidden"
-                    style={{ '--aspect-ratio': topImage.width / topImage.height } as any}
-                >
-                    <Image
-                        src={topImage}
-                        alt="ホームページトップ画像"
-                        fill
-                        sizes="100vw"
-                        className="object-cover object-center"
-                        priority
-                        unoptimized
-                    />
-                    <div className="absolute inset-0 bg-black/30" />
-                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
-                        <p className="mb-4 text-sm uppercase tracking-[0.35em] text-slate-100/80"> </p>
-                        <h1 className="max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">
-
-                        </h1>
-                        <p className="mt-6 max-w-2xl text-base text-slate-100/90 sm:text-lg">
-
-                        </p>
+        <main className="w-full h-screen bg-slate-950 text-white shadow-2xl shadow-black/30 mx-auto overflow-y-auto">
+            <section className="w-full flex flex-col items-center pb-10 sm:pb-20">
+                <div className="w-full max-w-4xl relative px-4 sm:px-6">
+                    <div className="fixed top-4 left-4 sm:left-6 z-50">
+                        <HamburgerMenu />
                     </div>
-
-                    {/* Hamburger menu (replaces individual buttons) */}
-                    <HamburgerMenu />
+                    <div className="flex flex-col gap-12 mt-20">
+                        <Image
+                            src={topImage}
+                            alt="ISTANBUL EXHIBITION"
+                            sizes="100vw"
+                            className="w-full h-auto shadow-2xl"
+                            priority
+                            unoptimized
+                        />
+                    </div>
                 </div>
             </section>
         </main>
